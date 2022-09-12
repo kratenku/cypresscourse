@@ -24,6 +24,6 @@ describe('Verificar variables jquery y comandos cypress',()=>{
             if($el.text().includes('Eau Parfumee au The Vert Shampoo')){
                 cy.wrap($el).click()
             }
-          });
+          }); 
     });  
 })
