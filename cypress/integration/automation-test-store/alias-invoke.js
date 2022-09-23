@@ -1,5 +1,7 @@
 ///<reference types="cypress"/>
 
+//const { get } = require("cypress/types/lodash");
+
 describe("Alias y invocación",()=>{
     it('Especificar el producto shampoo', () => {
         cy.visit('https://automationteststore.com/');
@@ -37,12 +39,36 @@ describe("Alias y invocación",()=>{
             
           }); */
         cy.get('.thumbnail').find('.oneprice').invoke('text').as('itemPrice');
+        cy.get('.thumbnail').find('.pricenew').invoke('text').as('newprice');
+
+        var itemsTotal=0;
         cy.get('@itemPrice').then( $linkText => {
-            const itemPrice = $linkText.split('$'); 
+            var itemsPriceTotal=0;
+            var itemPrice = $linkText.split('$'); 
             var i;
             for (i=0; i < itemPrice.length ; i++){
                 cy.log(itemPrice[i])
+                itemsPriceTotal +=Number(itemPrice[i])
             }
+            itemsTotal+=itemsPriceTotal;
+            cy.log("El valor total de la venta es: "+itemsPriceTotal)
+        })
+
+        cy.get('@newprice').then( $linkText => {
+            var itemsPriceTotal=0;
+            var itemPrice = $linkText.split('$'); 
+            var i;
+            for (i=0; i < itemPrice.length ; i++){
+                cy.log(itemPrice[i])
+                itemsPriceTotal +=Number(itemPrice[i])
+            }
+            itemsTotal+=itemsPriceTotal;
+            cy.log("El valor del nuevo precio de venta total es: "+itemsPriceTotal)
+        })
+
+        .then(()=>{
+            cy.log("The total item price de todos los productos"+itemsTotal);
+            expect(itemsTotal).to.equal(685.6) ;
         })
         
     });
